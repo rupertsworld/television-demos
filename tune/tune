@@ -1,0 +1,99 @@
+#!/usr/bin/env python3
+"""Read and tune one Television generative art card by meaning or by number."""
+
+import argparse
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+from tune_state import DEFAULTS, PRESETS, palette_for, parse_assignments
+
+
+FOLDER = Path(__file__).resolve().parent
+
+
+def tv(*arguments: str) -> str:
+    """Run the Television CLI and expose its actual failure message."""
+    result = subprocess.run(["tv", *arguments], capture_output=True, text=True, check=False)
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "tv command failed")
+    return result.stdout.strip()
+
+
+def artifact_id() -> str:
+    """Find the registered path artifact that points to this helper's folder."""
+    response = json.loads(tv("list-artifacts"))
+    matches = [artifact for artifact in response.get("artifacts", [])
+               if artifact.get("kind") == "path"
+               and Path(artifact.get("path", "")).resolve() == FOLDER]
+    if len(matches) == 1:
+        return matches[0]["id"]
+    if matches:
+        raise RuntimeError(f"Several Television artifacts point at {FOLDER}; keep one for this demo.")
+    raise RuntimeError(f"No Television path artifact points at {FOLDER}. Register the card first.")
+
+
+def read_state(identifier: str) -> dict:
+    """Read the shared root, using defaults if the page has not opened yet."""
+    response = json.loads(tv("resource", "json", "get", "--artifact", identifier))
+    if not response.get("exists"):
+        return {"params": DEFAULTS, "palette": palette_for(DEFAULTS), "saved": {}}
+    state = response["value"]
+    if not isinstance(state, dict) or not isinstance(state.get("params"), dict):
+        raise ValueError("The tune store has an unexpected shape")
+    had_variety = "variety" in state["params"]
+    state["params"] = {**DEFAULTS, **state["params"]}
+    if not had_variety:
+        state["palette"] = palette_for(state["params"])
+    return state
+
+
+def write_params(identifier: str, params: dict) -> None:
+    """Keep the rendered parameters and exported palette in one store update."""
+    tv("resource", "json", "update", "--artifact", identifier,
+       json.dumps({"params": params, "palette": palette_for(params)}))
+
+
+def parse_arguments(argv: list[str]) -> argparse.Namespace:
+    """Parse the small command set exposed to a stage agent."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest="command", required=True)
+    for command in ("get", "palette", "saved", "reset"):
+        commands.add_parser(command)
+    change = commands.add_parser("set", help="Set 0..1 controls, including variety")
+    change.add_argument("assignments", nargs="+")
+    preset = commands.add_parser("preset", help="Apply a named mood")
+    preset.add_argument("name", choices=PRESETS)
+    return parser.parse_args(argv)
+
+
+def main() -> int:
+    """Execute a command after resolving this folder's artifact and store."""
+    arguments = parse_arguments(sys.argv[1:])
+    try:
+        identifier = artifact_id()
+        state = read_state(identifier)
+        if arguments.command == "get":
+            print(json.dumps(state["params"], indent=2))
+        elif arguments.command == "palette":
+            print(json.dumps(state.get("palette") or palette_for(state["params"]), indent=2))
+        elif arguments.command == "saved":
+            print(json.dumps(state.get("saved") or {}, indent=2))
+        else:
+            if arguments.command == "set":
+                params = {**DEFAULTS, **state["params"], **parse_assignments(arguments.assignments)}
+            elif arguments.command == "preset":
+                params = PRESETS[arguments.name].copy()
+            else:
+                params = DEFAULTS.copy()
+            write_params(identifier, params)
+            print(json.dumps(params, indent=2))
+    except (OSError, ValueError, KeyError, json.JSONDecodeError, RuntimeError) as error:
+        print(f"tune: {error}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

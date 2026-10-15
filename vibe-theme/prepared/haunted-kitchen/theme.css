@@ -1,0 +1,57 @@
+/* Haunted kitchen: harvest-gold cards against dark cabinetry and avocado controls. */
+:root {
+  --color-surface: #f5eac8;
+  --color-surface-muted: #dfd09c;
+  --color-text: #2d2418;
+  --color-text-muted: #725839;
+  --neutral: oklch(0.54 0.055 84);
+  --accent: #677930;
+  --color-border: rgb(87 61 30 / 48%);
+  --color-link: #465b1b;
+  --font-sans: "Bookman Old Style", Georgia, "Times New Roman", serif;
+  --control-radius: 5px;
+  --panel-radius: 8px;
+  --panel-border: 1px solid var(--color-border);
+  --panel-edge-highlight: none;
+  --panel-edge-shadow: none;
+  --shadow-sm: 0 2px 4px rgb(62 37 15 / 22%);
+  --shadow-md: 0 6px 18px rgb(62 37 15 / 26%);
+}
+
+:root[data-television-document="app"] {
+  --sidebar-background: #4b3420;
+  --sidebar-text-color: #f8efca;
+  --sidebar-heading-text-color: #d9c680;
+  --sidebar-border: 2px solid #2a1b11;
+  --app-wallpaper:
+    radial-gradient(ellipse at 54% 18%, rgb(236 190 78 / 37%), transparent 48%),
+    repeating-linear-gradient(45deg, rgb(125 101 47 / 24%) 0 18px, rgb(69 49 27 / 22%) 18px 36px),
+    linear-gradient(145deg, #65502a, #352819 72%);
+  --wallpaper-overlay-background: rgb(49 33 20 / 86%);
+  --wallpaper-overlay-text-color: #fff1c8;
+  --navbar-text-color: #fff1c8;
+  --channel-background-selected: #dfad47;
+  --channel-text-color-selected: #302417;
+  --tab-background-selected: #efdfad;
+  --tab-text-color-selected: #302417;
+  --tab-radius: 5px;
+  --frame-radius: 13px;
+  --frame-background: #f5eac8;
+  --frame-border: 3px solid #a47436;
+  --frame-titlebar-background: #c5a45f;
+  --frame-titlebar-text-color: #2d2418;
+  --frame-titlebar-border-color: #8a622f;
+  --artifact-frame-shadow: 0 22px 48px rgb(26 16 7 / 60%), 0 0 0 2px rgb(52 33 15 / 45%);
+}
+
+/* The collapsed sidebar renders channel selection inside a separate popover. */
+:root[data-television-document="app"] .channel-switcher-pop {
+  --channel-background-selected: #dfad47;
+  --channel-text-color-selected: #302417;
+}
+
+/* Recipe-card labels echo stamped pantry tins without changing interaction states. */
+:root[data-television-document="app"] :is(.artifact-title, .channel-group-label) {
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}

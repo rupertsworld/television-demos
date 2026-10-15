@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The agent's face</title>
+    <link rel="stylesheet" href="/canonical/v2/styles.css?authoredForAppVersion=1.5.0">
+    <script type="module" src="/canonical/v2/components.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <main class="stage" aria-label="An expressive paper cut-out face">
+      <svg id="puppet" viewBox="0 0 900 700" role="img" aria-label="The agent's animated face">
+        <defs>
+          <!-- One low-strength displacement gives every cut edge a hand-cut wobble. -->
+          <filter id="roughen" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence id="paper-noise" type="fractalNoise" baseFrequency=".012 .018" numOctaves="1" seed="2" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="2.4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <pattern id="fibers" width="23" height="23" patternUnits="userSpaceOnUse">
+            <circle cx="3" cy="7" r=".8" class="fiber" />
+            <circle cx="17" cy="18" r=".6" class="fiber" />
+            <path d="M 8 20 l 3 -1 M 19 5 l 2 1" class="fiber-stroke" />
+          </pattern>
+          <clipPath id="left-eye-clip"><ellipse id="left-eye-clip-shape" cx="320" cy="340" rx="39" ry="45" /></clipPath>
+          <clipPath id="right-eye-clip"><ellipse id="right-eye-clip-shape" cx="580" cy="340" rx="39" ry="45" /></clipPath>
+          <clipPath id="mouth-clip"><path id="mouth-clip-shape" /></clipPath>
+          <clipPath id="body-clip">
+            <path d="M 225 139 Q 360 112 540 126 Q 664 124 707 220 L 727 480 Q 729 571 641 596 Q 459 624 273 589 Q 177 579 169 483 L 174 246 Q 172 167 225 139 Z" />
+          </clipPath>
+        </defs>
+
+        <g class="doodles" aria-hidden="true">
+          <path d="M 104 197 q 19 -29 35 2 t 34 -2 M 742 181 q 17 26 34 -5 t 35 6" />
+          <path d="M 69 454 q 30 -15 16 -36 q -9 -12 -20 2 q -6 12 8 16 M 805 464 q -24 -16 -14 -34 q 11 -16 21 0 q 8 13 -8 17" />
+          <path d="M 224 83 l 10 -18 l 9 19 l 19 9 l -19 8 l -9 19 l -10 -19 l -18 -8 z" class="star" />
+          <path d="M 710 73 l 7 -16 l 8 16 l 15 7 l -15 7 l -8 16 l -7 -16 l -15 -7 z" class="star" />
+          <path d="M 729 551 q 32 -16 47 9 M 146 566 q 24 -17 42 11" />
+        </g>
+
+        <g id="bob">
+          <g id="cutouts" filter="url(#roughen)">
+            <g class="vampire-only cape-paper" aria-hidden="true">
+              <path class="paper-piece cape-outer" d="M 232 393 L 138 347 Q 133 501 198 625 L 338 655 L 375 559 Z" />
+              <path class="paper-piece cape-outer" d="M 668 393 L 762 347 Q 767 501 702 625 L 562 655 L 525 559 Z" />
+              <path class="paper-piece cape-lining" d="M 158 382 L 224 474 L 339 611 L 254 558 Z" />
+              <path class="paper-piece cape-lining" d="M 742 382 L 676 474 L 561 611 L 646 558 Z" />
+            </g>
+            <path class="paper-piece hair hair-left" d="M 280 160 Q 236 73 281 77 Q 309 90 327 148 Z" />
+            <path class="paper-piece hair hair-right" d="M 558 147 Q 581 63 625 76 Q 650 94 606 168 Z" />
+            <path class="paper-piece hair hair-middle" d="M 392 139 Q 387 56 439 63 Q 475 72 458 146 Z" />
+
+            <path class="paper-piece outer-face" d="M 225 139 Q 360 112 540 126 Q 664 124 707 220 L 727 480 Q 729 571 641 596 Q 459 624 273 589 Q 177 579 169 483 L 174 246 Q 172 167 225 139 Z" />
+            <path class="paper-piece inner-face" d="M 252 180 Q 428 160 618 179 Q 669 191 680 254 L 686 463 Q 689 532 625 549 Q 455 574 280 550 Q 217 534 216 468 L 216 257 Q 216 207 252 180 Z" />
+            <path class="paper-grain" d="M 252 180 Q 428 160 618 179 Q 669 191 680 254 L 686 463 Q 689 532 625 549 Q 455 574 280 550 Q 217 534 216 468 L 216 257 Q 216 207 252 180 Z" fill="url(#fibers)" />
+            <path class="paper-piece vampire-only widow-hair" d="M 226 231 Q 235 165 330 164 Q 387 139 448 156 Q 521 129 610 165 Q 673 177 680 236 L 638 211 Q 557 193 497 216 L 449 278 L 403 219 Q 318 201 263 235 Z" />
+            <path class="paper-piece ear ear-left" d="M 189 323 Q 130 308 140 382 Q 148 431 204 419 Z" />
+            <path class="paper-piece ear ear-right" d="M 689 316 Q 754 304 750 382 Q 742 425 690 421 Z" />
+
+            <ellipse class="paper-piece vampire-only eye-ring" cx="320" cy="345" rx="56" ry="62" transform="rotate(-6 320 345)" />
+            <ellipse class="paper-piece vampire-only eye-ring" cx="580" cy="345" rx="56" ry="62" transform="rotate(6 580 345)" />
+            <ellipse class="paper-piece cheek cheek-left" cx="268" cy="430" rx="37" ry="22" transform="rotate(-11 268 430)" />
+            <ellipse class="paper-piece cheek cheek-right" cx="635" cy="427" rx="39" ry="23" transform="rotate(8 635 427)" />
+
+            <g class="paper-piece eye-piece" transform="rotate(-4 320 340)">
+              <ellipse id="left-eye" class="eye-paper" cx="320" cy="340" rx="39" ry="45" />
+              <ellipse id="left-pupil" class="pupil-paper" cx="320" cy="340" rx="16" ry="21" />
+              <circle id="left-glint" class="glint" cx="314" cy="333" r="5" />
+              <g clip-path="url(#left-eye-clip)"><rect id="left-lid" class="lid-paper" x="270" y="290" width="100" height="0" /></g>
+            </g>
+            <g class="paper-piece eye-piece" transform="rotate(5 580 340)">
+              <ellipse id="right-eye" class="eye-paper" cx="580" cy="340" rx="39" ry="45" />
+              <ellipse id="right-pupil" class="pupil-paper" cx="580" cy="340" rx="16" ry="21" />
+              <circle id="right-glint" class="glint" cx="574" cy="333" r="5" />
+              <g clip-path="url(#right-eye-clip)"><rect id="right-lid" class="lid-paper" x="530" y="290" width="100" height="0" /></g>
+            </g>
+
+            <path id="left-brow" class="paper-piece brow brow-left" />
+            <path id="right-brow" class="paper-piece brow brow-right" />
+
+            <path id="mouth" class="paper-piece mouth-paper" />
+            <g clip-path="url(#mouth-clip)"><path id="teeth" class="teeth-paper" d="M 315 436 Q 450 457 586 430 L 575 448 Q 450 467 327 451 Z" /></g>
+            <path id="left-fang" class="paper-piece vampire-only fang-paper" />
+            <path id="right-fang" class="paper-piece vampire-only fang-paper" />
+            <path class="nose-squiggle" d="M 443 365 q -13 16 10 20 q 13 3 15 -8" />
+            <rect class="all-grain" x="160" y="120" width="575" height="490" fill="url(#fibers)" clip-path="url(#body-clip)" />
+          </g>
+        </g>
+      </svg>
+
+      <div id="caption" class="caption" role="status" aria-live="polite" hidden></div>
+      <button id="wake" class="wake" type="button" hidden>tap to wake me</button>
+    </main>
+  </body>
+</html>

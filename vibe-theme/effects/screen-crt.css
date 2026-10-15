@@ -1,0 +1,27 @@
+/* Append to theme.css. Static scanlines plus sparse stepped flicker; app only. */
+:root[data-television-document="app"] {
+  --vibe-scanline: rgb(0 0 0 / 22%); /* EDIT */
+  --vibe-glass-tint: rgb(170 255 190 / 4%); /* EDIT */
+}
+
+:root[data-television-document="app"] #foreground-overlay {
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, var(--vibe-scanline) 3px 4px);
+}
+
+:root[data-television-document="app"] #foreground-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--vibe-glass-tint);
+  animation: vibe-crt-flicker 5.2s steps(1) infinite;
+}
+
+@keyframes vibe-crt-flicker {
+  0%, 7%, 10%, 51%, 54%, 100% { opacity: 1; }
+  8%, 52% { opacity: .2; }
+  9%, 53% { opacity: .7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-television-document="app"] #foreground-overlay::after { animation: none; }
+}

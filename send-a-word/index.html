@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Send the TV a word</title>
+    <link rel="stylesheet" href="/canonical/v2/styles.css?authoredForAppVersion=1.5.0">
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        color: var(--color-text, #242322);
+        background: var(--color-surface-muted, #e7e9e5);
+        font-family: var(--font-sans, system-ui, sans-serif);
+      }
+      main {
+        display: grid;
+        justify-items: center;
+        gap: 1.2rem;
+        padding: 2rem 16px;
+        text-align: center;
+      }
+      h1 { margin: 0; font-size: clamp(2rem, 6vw, 4rem); line-height: 1.05; }
+      p { margin: 0; font-size: clamp(1rem, 2.4vw, 1.6rem); }
+      .qr {
+        width: min(62vh, 80vw);
+        padding: 1rem;
+        border-radius: 1rem;
+        background: #fff; /* QR codes scan best dark-on-white, whatever the theme */
+        box-shadow: var(--shadow-lg, 0 14px 32px rgb(0 0 0 / .2));
+      }
+      .qr img { display: block; width: 100%; height: auto; }
+      .link { font-family: var(--font-mono, ui-monospace, monospace); opacity: .75; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Send the TV a word</h1>
+      <div class="qr"><img src="./qr.svg" alt="QR code for tally.so/r/Z958J0"></div>
+      <p>One word. It lands on the fridge.</p>
+      <p class="link">tally.so/r/Z958J0</p>
+    </main>
+  </body>
+</html>

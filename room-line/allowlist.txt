@@ -1,0 +1,18 @@
+# Innocent words caught by a root or ending. Only these spellings and simple endings pass.
+cocktail
+scunthorpe
+peacock
+cockatoo
+cockle
+cockpit
+cockerel
+pussycat
+pedometer
+pedology
+torpedo
+# Repeated-letter normalization can make "assess" look like a blocked ending.
+assess
+good
+many
+wary
+racing

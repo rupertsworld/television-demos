@@ -1,0 +1,46 @@
+/* Vibe starter: shared document colors and app-only shell materials. EDIT the marked values. */
+:root {
+  /* EDIT: keep these four semantic roles readable as one palette. */
+  --color-surface: #171c24;
+  --color-surface-muted: #222b34;
+  --color-text: #f4eee1;
+  --color-text-muted: #b9b6aa;
+  /* EDIT: the neutral seed tints default scales; the accent drives actions and focus. */
+  --neutral: oklch(0.55 0.035 240);
+  --accent: oklch(0.76 0.15 70);
+  --color-border: rgb(244 238 225 / 26%);
+  --color-link: var(--accent);
+  /* EDIT: choose a local font stack so the reveal does not wait on a download. */
+  --font-sans: Georgia, "Times New Roman", serif;
+  --control-radius: 8px;
+  --panel-radius: 12px;
+  --panel-border: 1px solid var(--color-border);
+  --panel-edge-highlight: none;
+  --panel-edge-shadow: none;
+}
+
+:root[data-television-document="app"] {
+  /* EDIT: make the shell visibly part of the new scene. */
+  --sidebar-background: #111820;
+  --sidebar-text-color: var(--color-text);
+  --app-wallpaper: radial-gradient(circle at 60% 35%, #55523d 0%, #19232b 48%, #0d131a 100%);
+  --wallpaper-overlay-background: rgb(20 27 34 / 78%);
+  --wallpaper-overlay-text-color: var(--color-text);
+  --navbar-text-color: var(--color-text);
+  --channel-background-selected: var(--accent);
+  --channel-text-color-selected: #211b12;
+  --tab-background-selected: var(--color-surface);
+  --tab-text-color-selected: var(--color-text);
+  --frame-radius: 18px;
+  --frame-background: var(--color-surface);
+  --frame-border: 2px solid var(--color-border);
+  --frame-titlebar-background: var(--color-surface-muted);
+  --frame-titlebar-text-color: var(--color-text);
+  --artifact-frame-shadow: 0 20px 50px rgb(0 0 0 / 42%);
+}
+
+/* The collapsed sidebar uses its own panel colors; repeat the selection cue there. */
+:root[data-television-document="app"] .channel-switcher-pop {
+  --channel-background-selected: var(--accent);
+  --channel-text-color-selected: #211b12;
+}

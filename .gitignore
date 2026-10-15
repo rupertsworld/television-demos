@@ -1,0 +1,6 @@
+__pycache__/
+node_modules/
+state.json
+relay.lock
+.state-*
+.previous-theme

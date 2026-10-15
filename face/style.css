@@ -1,0 +1,178 @@
+/* A full-bleed paper puppet. All paints and type come from the live canonical
+   token surface so a Television theme can recolor the collage in place. */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  color: var(--color-text, #27232a);
+  background: var(--color-surface, #fbf8f0);
+  font-family: var(--font-sans, sans-serif);
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  isolation: isolate;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 19%, var(--accent-alpha-10, rgb(99 102 241 / .1)), transparent 25%),
+    radial-gradient(circle at 84% 78%, var(--pink-alpha-10, rgb(236 72 153 / .1)), transparent 27%),
+    var(--color-surface, #fbf8f0);
+}
+
+/* Thin dots suggest a sheet of paper without baking in a theme-specific tint. */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: .26;
+  background-image: radial-gradient(var(--color-border, #bdb4b8) .65px, transparent .7px);
+  background-size: 19px 19px;
+}
+
+#puppet {
+  width: min(112vw, 140vh);
+  max-height: 106vh;
+  overflow: visible;
+  transform-origin: 50% 53%;
+  animation: paper-arrival 620ms steps(6, end) both;
+}
+
+#bob {
+  transform-origin: 450px 380px;
+  animation: puppet-breathe 5s steps(12, end) infinite;
+}
+
+.paper-piece {
+  filter: drop-shadow(3px 5px 2px var(--color-border, #b6aab1));
+  stroke: var(--color-text, #27232a);
+  stroke-width: 3.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  transition: fill 260ms steps(3, end), opacity 260ms steps(3, end);
+}
+
+.outer-face { fill: var(--yellow-300, #f9db68); stroke-width: 7; }
+.inner-face { fill: var(--color-surface-muted, #f3e8ed); stroke-width: 5; }
+.hair-left { fill: var(--orange-400, #fb923c); }
+.hair-right { fill: var(--pink-400, #f472b6); }
+.hair-middle { fill: var(--green-400, #4ade80); }
+.ear-left { fill: var(--purple-300, #d8b4fe); }
+.ear-right { fill: var(--cyan-300, #67e8f9); }
+.cheek { fill: var(--pink-300, #f9a8d4); stroke-width: 2.5; }
+.eye-paper { fill: var(--cyan-100, #cffafe); stroke-width: 4; }
+.pupil-paper { fill: var(--blue-700, #1d4ed8); stroke-width: 2; }
+.glint { fill: var(--color-surface, #fff); }
+.lid-paper { fill: var(--yellow-300, #f9db68); }
+.brow { fill: none; stroke-width: 15; }
+.brow-left { stroke: var(--purple-700, #7e22ce); }
+.brow-right { stroke: var(--green-700, #15803d); }
+.mouth-paper { fill: var(--red-600, #dc2626); stroke-width: 4.5; }
+.teeth-paper { fill: var(--color-surface, #fff); stroke: var(--color-text, #27232a); stroke-width: 2; opacity: 0; transition: opacity 300ms; }
+#puppet[data-mood="mischievous"] .teeth-paper { opacity: 1; }
+.nose-squiggle { fill: none; stroke: var(--orange-700, #c2410c); stroke-width: 5; stroke-linecap: round; }
+.fiber { fill: var(--color-text, #27232a); opacity: .18; }
+.fiber-stroke { fill: none; stroke: var(--color-text, #27232a); stroke-width: .7; opacity: .14; }
+.all-grain { opacity: .43; pointer-events: none; }
+.doodles { fill: none; stroke: var(--accent-500, #6366f1); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.doodles .star { fill: var(--yellow-300, #f9db68); stroke: var(--purple-600, #9333ea); stroke-width: 4; }
+
+/* The theme marker lives in Television's active theme CSS. These pieces keep
+   their own cut edges, grain overlay and shadows in both appearances. */
+.vampire-only { opacity: 0; transition: opacity 230ms steps(3, end); }
+.cape-outer { fill: var(--purple-950, #2e1065); stroke-width: 5; }
+.cape-lining { fill: var(--red-700, #b91c1c); stroke-width: 4; }
+.widow-hair { fill: var(--neutral-950, #171717); stroke-width: 5; }
+.eye-ring { fill: var(--purple-900, #581c87); stroke: var(--neutral-950, #171717); stroke-width: 2; }
+.fang-paper { fill: var(--neutral-50, #fafafa); stroke: var(--neutral-950, #171717); stroke-width: 3; }
+
+#puppet[data-spooky="true"] .vampire-only { opacity: 1; }
+#puppet[data-spooky="true"] .hair { opacity: 0; }
+#puppet[data-spooky="true"] .outer-face { fill: var(--green-300, #86efac); }
+#puppet[data-spooky="true"] .inner-face { fill: var(--green-100, #dcfce7); }
+#puppet[data-spooky="true"] .cheek { fill: var(--green-200, #bbf7d0); opacity: .45; }
+#puppet[data-spooky="true"] .eye-paper { fill: var(--neutral-100, #f5f5f5); }
+#puppet[data-spooky="true"] .pupil-paper { fill: var(--neutral-950, #171717); }
+#puppet[data-spooky="true"] .glint { fill: var(--red-500, #ef4444); }
+#puppet[data-spooky="true"] .lid-paper { fill: var(--green-300, #86efac); }
+#puppet[data-spooky="true"] .mouth-paper { fill: var(--red-900, #7f1d1d); }
+#puppet[data-spooky="true"] .brow { stroke: var(--neutral-950, #171717); }
+#puppet[data-spooky="true"] .nose-squiggle { stroke: var(--green-700, #15803d); }
+#puppet[data-transforming="true"] #bob { animation: paper-transform 760ms steps(8, end) both; }
+
+.caption {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(12px, 3vh, 36px);
+  max-width: min(78vw, 900px);
+  padding: .4em .9em .46em;
+  transform: translateX(-50%) rotate(-1.4deg);
+  color: var(--color-text, #27232a);
+  background: var(--color-surface, #fbf8f0);
+  border: 2px solid var(--color-border, #bdb4b8);
+  border-radius: 3px 7px 4px 6px;
+  box-shadow: 4px 5px 0 var(--yellow-300, #f9db68), 7px 9px 12px var(--color-border, #bdb4b8);
+  /* Local marker faces avoid an external font request in Television's sandbox. */
+  font-family: "Marker Felt", "Bradley Hand", var(--font-sans, sans-serif);
+  font-size: clamp(18px, 2.2vw, 31px);
+  font-weight: var(--font-weight-semibold, 600);
+  line-height: 1.13;
+  letter-spacing: .025em;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.wake {
+  position: absolute;
+  right: var(--space-16, 16px);
+  bottom: var(--space-16, 16px);
+  z-index: 2;
+  padding: .4em .8em;
+  border: 1px solid var(--color-border, #bdb4b8);
+  border-radius: var(--radius-pill, 999px);
+  color: var(--color-text, #27232a);
+  background: var(--color-surface, #fbf8f0);
+  font: 500 var(--text-sm, 14px) var(--font-sans, sans-serif);
+  box-shadow: 2px 3px 0 var(--accent-300, #a5b4fc);
+  cursor: pointer;
+}
+
+.wake:focus-visible { outline: var(--outline-focus, 2px solid currentColor); }
+[hidden] { display: none !important; }
+
+@keyframes puppet-breathe {
+  0%, 100% { transform: translateY(0) rotate(-.4deg) scale(1); }
+  50% { transform: translateY(-7px) rotate(.5deg) scale(1.012); }
+}
+
+@keyframes paper-arrival {
+  0% { opacity: .35; transform: scale(.94) rotate(-2deg); }
+  30% { opacity: .8; transform: scale(1.025) rotate(1.5deg); }
+  65% { opacity: 1; transform: scale(.985) rotate(-.7deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+@keyframes paper-transform {
+  0%, 100% { transform: translateY(0) rotate(0) scale(1); }
+  25% { transform: translateY(-9px) rotate(-3deg) scale(1.025, .96); }
+  50% { transform: translateY(7px) rotate(2.5deg) scale(.975, 1.04); }
+  75% { transform: translateY(-5px) rotate(-1deg) scale(1.02, .98); }
+}
+
+@media (max-width: 680px) {
+  #puppet { width: 130vw; max-width: none; }
+  .caption { max-width: 90vw; bottom: 18px; }
+  .wake { top: 12px; right: 12px; bottom: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #bob, #puppet { animation: none; }
+}

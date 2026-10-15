@@ -1,0 +1,60 @@
+/* Deep sea: ink-blue glass with cyan rims and a faint pink bioluminescent echo. */
+:root {
+  --color-surface: #081b28;
+  --color-surface-muted: #102d3d;
+  --color-text: #e2faff;
+  --color-text-muted: #a4d0dc;
+  --neutral: oklch(0.5 0.055 226);
+  --accent: #58e9dc;
+  --cyan: oklch(0.76 0.13 199);
+  --pink: oklch(0.75 0.15 340);
+  --color-border: rgb(105 229 236 / 44%);
+  --color-link: #7ef5ee;
+  --font-sans: "Avenir Next", "Trebuchet MS", Arial, sans-serif;
+  --control-radius: 16px;
+  --panel-radius: 20px;
+  --panel-border: 1px solid var(--color-border);
+  --panel-edge-highlight: linear-gradient(to bottom, rgb(187 255 255 / 30%), transparent 16px);
+  --panel-edge-shadow: 0 0 0 1px rgb(24 152 169 / 30%);
+  --shadow-sm: 0 0 10px rgb(46 216 228 / 14%);
+  --shadow-md: 0 8px 24px rgb(0 6 22 / 45%), 0 0 16px rgb(46 216 228 / 14%);
+}
+
+:root[data-television-document="app"] {
+  --sidebar-background: #061522;
+  --sidebar-text-color: #d9f7fa;
+  --sidebar-heading-text-color: #88c2d1;
+  --sidebar-border: 1px solid #195263;
+  --app-wallpaper:
+    radial-gradient(ellipse at 84% 16%, rgb(185 72 151 / 24%), transparent 36%),
+    radial-gradient(ellipse at 16% 75%, rgb(24 177 187 / 25%), transparent 42%),
+    linear-gradient(155deg, #0a263b 0%, #04111e 55%, #020912 100%);
+  --wallpaper-overlay-background: rgb(5 24 39 / 86%);
+  --wallpaper-overlay-text-color: #dffcff;
+  --navbar-text-color: #dffcff;
+  --channel-background-selected: #58e9dc;
+  --channel-text-color-selected: #04212a;
+  --tab-background-selected: #174455;
+  --tab-text-color-selected: #dffcff;
+  --tab-border-selected: 1px solid #58e9dc;
+  --tab-radius: 18px;
+  --frame-radius: 24px;
+  --frame-background: #081b28;
+  --frame-border: 2px solid #3dabc2;
+  --frame-titlebar-background: #103747;
+  --frame-titlebar-text-color: #dffcff;
+  --frame-titlebar-border-color: #328299;
+  --artifact-frame-shadow: 0 24px 54px rgb(0 3 14 / 75%), 0 0 26px rgb(43 210 224 / 24%);
+}
+
+/* The collapsed sidebar renders channel selection inside a separate popover. */
+:root[data-television-document="app"] .channel-switcher-pop {
+  --channel-background-selected: #58e9dc;
+  --channel-text-color-selected: #04212a;
+}
+
+/* Instrument-style labels give the shell an observatory character. */
+:root[data-television-document="app"] :is(.artifact-title, .channel-group-label) {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}

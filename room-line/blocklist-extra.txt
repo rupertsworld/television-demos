@@ -1,0 +1,2 @@
+# word: blocks this whole spelling and simple endings; root: blocks it inside any word.
+# Add one entry per line. Bare words still work as whole words. Restart to reload.

@@ -1,0 +1,37 @@
+/* Append instead of screen-crt.css. Small chromatic lines and an occasional glitch band. */
+:root[data-television-document="app"] {
+  --vibe-glitch-red: rgb(255 45 109 / 8%); /* EDIT */
+  --vibe-glitch-cyan: rgb(45 226 255 / 8%); /* EDIT */
+}
+
+:root[data-television-document="app"] #foreground-overlay {
+  background: repeating-linear-gradient(to bottom,
+    var(--vibe-glitch-red) 0 1px, transparent 1px 3px,
+    var(--vibe-glitch-cyan) 3px 4px, transparent 4px 6px);
+}
+
+:root[data-television-document="app"] #foreground-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: inset(100% 0 0);
+  background: linear-gradient(to right, var(--vibe-glitch-red), transparent 45%, var(--vibe-glitch-cyan));
+  animation: vibe-glitch-band 11s steps(1) infinite;
+}
+
+/* Tint only short strips for a few frames, leaving most of the screen undisturbed. */
+@keyframes vibe-glitch-band {
+  0%, 89%, 93%, 100% { clip-path: inset(100% 0 0); transform: translateX(0); }
+  90% { clip-path: inset(22% 0 74%); transform: translateX(5px); }
+  91% { clip-path: inset(66% 0 30%); transform: translateX(-4px); }
+  92% { clip-path: inset(40% 0 55%); transform: translateX(3px); }
+}
+
+/* A double edge on shell labels suggests chromatic misregistration without blurring content. */
+:root[data-television-document="app"] :is(.artifact-title, .tab-label) {
+  text-shadow: -1px 0 var(--vibe-glitch-red), 1px 0 var(--vibe-glitch-cyan);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-television-document="app"] #foreground-overlay::after { animation: none; }
+}

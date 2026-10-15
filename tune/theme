@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+"""Turn this card's live palette into the active Television display theme."""
+
+import argparse
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import tempfile
+
+from theme_style import map_palette, render_css
+from tune_state import DEFAULTS
+
+
+FOLDER = Path(__file__).resolve().parent
+THEME_ID = "demo-colour-study"
+DEFAULT_OUT = Path("/root/.television/themes") / THEME_ID
+PREVIOUS_FILE = FOLDER.parent / ".previous-theme"
+
+
+def tv(*arguments: str) -> str:
+    """Run the Television CLI with the same error surface as tune."""
+    result = subprocess.run(["tv", *arguments], capture_output=True, text=True, check=False)
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "tv command failed")
+    return result.stdout.strip()
+
+
+def artifact_id() -> str:
+    """Resolve the one path artifact registered for this folder."""
+    response = json.loads(tv("list-artifacts"))
+    matches = [artifact for artifact in response.get("artifacts", [])
+               if artifact.get("kind") == "path"
+               and Path(artifact.get("path", "")).resolve() == FOLDER]
+    if len(matches) == 1:
+        return matches[0]["id"]
+    if matches:
+        raise RuntimeError(f"Several Television artifacts point at {FOLDER}; keep one for this demo.")
+    raise RuntimeError(f"No Television path artifact points at {FOLDER}. Register the card first.")
+
+
+def read_store(identifier: str) -> tuple[list[str], dict]:
+    """Read the five colours and parameters from this card's shared store."""
+    response = json.loads(tv("resource", "json", "get", "--artifact", identifier))
+    if not response.get("exists"):
+        raise ValueError("The Colour study store is empty; open the card first")
+    state = response["value"]
+    if not isinstance(state, dict) or not isinstance(state.get("params"), dict):
+        raise ValueError("The Colour study store has an unexpected shape")
+    return state.get("palette"), {**DEFAULTS, **state["params"]}
+
+
+def atomic_write(path: Path, contents: str) -> None:
+    """Replace one watched theme file after its complete contents are ready."""
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=path.parent, delete=False) as temporary:
+        temporary.write(contents)
+        temporary_path = Path(temporary.name)
+    try:
+        os.replace(temporary_path, path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+
+
+def write_package(out: Path, manifest: dict, css: str) -> None:
+    """Write the fixed theme ID, protecting a folder with another manifest."""
+    if out.exists() and any(out.iterdir()):
+        if not (out / "manifest.json").exists():
+            raise ValueError(f"Refusing to replace an unrecognized theme folder at {out}")
+        existing = json.loads((out / "manifest.json").read_text())
+        if existing.get("name") != "Colour study":
+            raise ValueError(f"Refusing to replace a different theme at {out}")
+    out.mkdir(parents=True, exist_ok=True)
+    atomic_write(out / "theme.css", css)
+    atomic_write(out / "manifest.json", json.dumps(manifest, indent=2) + "\n")
+    record = out / "README.md"
+    if not record.exists():
+        atomic_write(record, "# Colour study theme\n\n"
+                     "Generated from the live Colour study card by `tune/theme`. "
+                     "The palette supplies the wallpaper and UI accents; surfaces and text "
+                     "are adjusted to maintain at least 4.5:1 contrast. "
+                     "Running the helper again replaces `manifest.json` and `theme.css`.\n")
+
+
+def save_previous_theme(path: Path) -> None:
+    """Record the original selection once, before first activation."""
+    if path.exists():
+        return
+    current = json.loads(tv("focus-status")).get("activeThemeName")
+    with path.open("x", encoding="utf-8") as record:
+        record.write((current if isinstance(current, str) else "none") + "\n")
+
+
+def main() -> int:
+    """Read the card, create its theme package, and optionally activate it."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--out", type=Path, default=DEFAULT_OUT, help="Theme folder (for tests)")
+    parser.add_argument("--no-apply", action="store_true", help="Write files without selecting the theme")
+    arguments = parser.parse_args()
+    try:
+        palette, params = read_store(artifact_id())
+        roles = map_palette(palette, params)
+        manifest = {"name": "Colour study", "version": "1.0.0", "colorScheme": roles["scheme"]}
+        write_package(arguments.out, manifest, render_css(roles, palette, params))
+        if not arguments.no_apply:
+            # The override exists only so tests never touch the real repo backup.
+            previous = Path(os.environ.get("TUNE_THEME_PREVIOUS_FILE", PREVIOUS_FILE))
+            save_previous_theme(previous)
+            tv("set-theme", THEME_ID)
+        print(f"{THEME_ID} {' '.join(palette)}")
+    except (OSError, ValueError, KeyError, json.JSONDecodeError, RuntimeError) as error:
+        print(f"theme: {error}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

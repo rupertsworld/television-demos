@@ -1,0 +1,11 @@
+# Halloween Night
+
+Intent: A full Halloween scene visible from the back of a room: near-black violet night, a bright moon, pumpkin-orange windows and jack-o'-lanterns, sickly green cobwebs and ghosts, and occasional bats. The theme fixes dark appearance. Text stays pale on dark surfaces; the props live along edges and corners so artifact content remains readable.
+
+The four semantic colors and the readable Trebuchet/Verdana stack reach Television and live canonical artifacts. Creepster is bundled from the [Google Fonts Creepster package](https://github.com/google/fonts/tree/main/ofl/creepster), with its OFL license in `assets/OFL.txt`. It is used only for headings and shell labels because its letterforms are unsuitable for body copy. The CSS moon and orange haze belong to the app wallpaper. Small inline SVG cobwebs decorate the sidebar and artifact titlebar corners; these selectors only add backgrounds and leave layout and interaction states to Television.
+
+`iframe-overlay.js` adds two jack-o'-lanterns, two drifting ghosts, two intermittent bats, two static corner webs, and eight faint rising embers from the kit's weather block. All SVG is inline and authored here; there are no external images or network calls. The sandboxed foreground frame cannot inspect artifacts or the app DOM. Motion is CSS transform or stepped opacity on a few small nodes, with no frame loop, pointer listener, or main-page consent. Reduced-motion leaves the pumpkins and webs static and hides bats, ghosts, and embers. The app creates one overlay frame per screen, not one per card.
+
+## Composition map
+
+This prepared theme is the hand-tuned example of the kit: the wallpaper gradient and moon correspond to `effects/wallpaper-scene.css`; Creepster follows `effects/display-font.css`; the ghosts and bats are custom `effects/sprites.js` motions; the cobwebs and pumpkins are `effects/edge-props.js` style placements; candle flicker is a small screen-effect animation. The ember code is a configured copy of `effects/weather.js` appended as a separate IIFE. The hand-tuned props stay in the first entry script so bat wings and pumpkin glow keep their exact motion. For a new prompt, start with the generic blocks rather than copying Halloween art.

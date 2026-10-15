@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Colour study</title>
+    <link rel="stylesheet" href="/canonical/v2/styles.css?authoredForAppVersion=1.5.0">
+    <script type="module" src="/canonical/v2/components.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <main class="stage">
+      <canvas id="art" aria-label="Animated flowing colour field"></canvas>
+      <div class="vignette" aria-hidden="true"></div>
+      <header class="title-block">
+        <span class="eyebrow">A living colour study</span>
+        <h1>Elsewhere,<br><em>in colour.</em></h1>
+        <p>Move a feeling. Keep a colour.</p>
+      </header>
+      <aside class="controls" id="controls" aria-label="Tune the artwork">
+        <div class="controls-head">
+          <span>Tune the feeling</span>
+          <button id="collapse" type="button" aria-label="Collapse controls" aria-expanded="true">−</button>
+        </div>
+        <div class="controls-body" id="controls-body">
+          <div class="sliders" id="sliders"></div>
+          <div class="controls-actions">
+            <button type="button" id="save">Save</button>
+            <button type="button" id="download">Download <span aria-hidden="true">↗</span></button>
+          </div>
+          <div class="saved" id="saved" aria-label="Saved colourways"></div>
+        </div>
+      </aside>
+      <div class="palette-wrap" aria-label="Current colour palette">
+        <div class="palette-caption"><span>The colours in this moment</span><span id="notice" role="status" aria-live="polite"></span></div>
+        <div class="palette" id="palette"></div>
+      </div>
+      <p class="store-error" id="error" role="alert" hidden></p>
+    </main>
+  </body>
+</html>

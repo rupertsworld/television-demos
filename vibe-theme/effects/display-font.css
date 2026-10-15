@@ -1,0 +1,16 @@
+/* Append to theme.css after copying one bundled font to assets/display.ttf with its OFL license. */
+@font-face {
+  font-family: "Vibe Display";
+  src: url(assets/display.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Body copy keeps the readable --font-sans; display lettering is for short titles only. */
+:root[data-television-document="app"] :is(.tab-label, .artifact-title, .channel-group-label),
+:root:not([data-television-document="app"]) :is(h1, h2, h3) {
+  font-family: "Vibe Display", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: .04em;
+}

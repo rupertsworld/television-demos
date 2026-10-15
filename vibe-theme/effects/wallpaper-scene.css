@@ -1,0 +1,16 @@
+/* Append to theme.css. EDIT four paints, then draw assets/silhouette.svg for the prompt. */
+:root[data-television-document="app"] {
+  --scene-sky-top: #081536;
+  --scene-sky-bottom: #714075;
+  --scene-orb: #ffe7ac; /* moon or sun; set to transparent to hide */
+  --scene-haze: rgb(248 119 205 / 26%);
+  /* This registered URL token resolves against theme.css, so the asset travels with the package. */
+  --app-wallpaper-image: url(assets/silhouette.svg);
+  --app-wallpaper:
+    var(--app-wallpaper-image) center bottom / 100% auto no-repeat,
+    radial-gradient(circle 43px at 78% 19%, var(--scene-orb) 0 65%, transparent 72%),
+    radial-gradient(ellipse 35% 25% at 78% 20%, var(--scene-haze), transparent),
+    linear-gradient(to bottom, var(--scene-sky-top), var(--scene-sky-bottom));
+  --wallpaper-overlay-background: rgb(13 20 44 / 82%);
+  --wallpaper-overlay-text-color: #fff6eb;
+}

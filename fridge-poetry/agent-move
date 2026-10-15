@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+"""Move one fridge magnet through Television's JSON store CLI."""
+
+import argparse
+import json
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+from poetry import board_text, place_update, starting_state
+
+
+FOLDER = Path(__file__).resolve().parent
+
+
+def tv(*arguments: str) -> str:
+    """Call the configured tv CLI and turn failures into useful demo errors."""
+    result = subprocess.run(["tv", *arguments], capture_output=True, text=True, check=False)
+    if result.returncode:
+        raise RuntimeError(result.stderr.strip() or result.stdout.strip() or "tv command failed")
+    return result.stdout.strip()
+
+
+def artifact_id() -> str:
+    """Resolve this folder's registered path artifact without embedding an ID."""
+    response = json.loads(tv("list-artifacts"))
+    matches = [
+        artifact for artifact in response.get("artifacts", [])
+        if artifact.get("kind") == "path" and Path(artifact.get("path", "")).resolve() == FOLDER
+    ]
+    if len(matches) == 1:
+        return matches[0]["id"]
+    if matches:
+        raise RuntimeError(f"Several Television artifacts point at {FOLDER}; keep one for this demo.")
+    raise RuntimeError(
+        f"No Television path artifact points at {FOLDER}. "
+        "Register it with tv create-path-artifact --path <folder> first."
+    )
+
+
+def read_state(identifier: str) -> dict:
+    """Read the current store, explaining how to seed one that is still empty."""
+    response = json.loads(tv("resource", "json", "get", "--artifact", identifier))
+    if not response.get("exists"):
+        raise RuntimeError("The fridge store is empty. Open the page once or run agent-move reset.")
+    state = response["value"]
+    if not isinstance(state, dict) or not isinstance(state.get("words"), dict):
+        raise RuntimeError("The fridge store has an unexpected shape; run agent-move reset.")
+    return state
+
+
+def parse_arguments(argv: list[str]) -> argparse.Namespace:
+    """Parse commands while treating a leading-hyphen magnet as a word."""
+    parser = argparse.ArgumentParser(description=__doc__)
+    commands = parser.add_subparsers(dest="command", required=True)
+    commands.add_parser("board", help="Show placed words and the pile")
+    commands.add_parser("reset", help="Return every word to the pile")
+    place = commands.add_parser("place", help="Place one pile word on the fridge")
+    place.add_argument("word")
+    position = place.add_mutually_exclusive_group(required=True)
+    position.add_argument("--after", metavar="ANCHOR")
+    position.add_argument("--at", nargs=2, type=float, metavar=("X", "Y"))
+    # Magnetic poetry includes "-s" and "-ing". argparse otherwise mistakes
+    # the required first place operand for a command option.
+    suffix_word = (
+        argv[1] if len(argv) > 1 and argv[0] == "place"
+        and argv[1].startswith("-") and not argv[1].startswith("--") else None
+    )
+    if suffix_word is not None:
+        argv = [argv[0], "__magnet_word__", *argv[2:]]
+    if "--after" in argv:
+        anchor_index = argv.index("--after")
+        if anchor_index + 1 < len(argv) and argv[anchor_index + 1].startswith("-") \
+                and not argv[anchor_index + 1].startswith("--"):
+            argv = [*argv[:anchor_index], f"--after={argv[anchor_index + 1]}", *argv[anchor_index + 2:]]
+    arguments = parser.parse_args(argv)
+    if suffix_word is not None:
+        arguments.word = suffix_word
+    return arguments
+
+
+def main() -> int:
+    """Parse a board, place, or reset command and apply its store operation."""
+    arguments = parse_arguments(sys.argv[1:])
+
+    try:
+        identifier = artifact_id()
+        if arguments.command == "reset":
+            texts = json.loads((FOLDER / "words.json").read_text())
+            tv("resource", "json", "set", "--artifact", identifier, json.dumps(starting_state(texts)))
+            print(f"Reset {len(texts)} magnets to the pile.")
+        elif arguments.command == "board":
+            print(board_text(read_state(identifier)))
+        else:
+            update = place_update(
+                read_state(identifier), arguments.word, after=arguments.after,
+                at=tuple(arguments.at) if arguments.at else None,
+                timestamp=int(time.time() * 1000),
+            )
+            tv("resource", "json", "update", "--artifact", identifier, json.dumps(update))
+            placed = next(value for key, value in update.items() if key.startswith("words/"))
+            print(f'Placed "{placed["text"]}" at ({placed["x"]:.3f}, {placed["y"]:.3f}).')
+    except (OSError, ValueError, KeyError, json.JSONDecodeError, RuntimeError) as error:
+        print(f"agent-move: {error}", file=sys.stderr)
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

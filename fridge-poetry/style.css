@@ -1,0 +1,378 @@
+/* One enamel door. Television supplies its paint and light; paper magnets keep their own ink. */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--color-text, #242322);
+  background: var(--color-surface-muted, #e7e9e5);
+  font-family: var(--font-sans, system-ui, sans-serif);
+}
+
+.experience {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: clamp(10px, 1.4vw, 22px);
+  perspective: 1800px;
+}
+
+/* The body, bevel and sheen are separate light passes on the same painted metal. */
+.fridge {
+  position: relative;
+  isolation: isolate;
+  width: min(100%, 1500px);
+  height: clamp(760px, calc(100vh - 30px), 1080px);
+  overflow: hidden;
+  border: 1px solid var(--panel-border-color, #879390);
+  border-radius: 39px 34px 42px 38px;
+  color: var(--panel-text-color, #24312e);
+  background-color: var(--panel-background, #e5eae5);
+  background-image:
+    linear-gradient(90deg,
+      color-mix(in srgb, var(--neutral-50, #fff) 25%, transparent),
+      transparent 8%, transparent 92%,
+      color-mix(in srgb, var(--neutral-900, #222) 29%, transparent)),
+    linear-gradient(125deg,
+      color-mix(in oklch, var(--panel-background, #e5eae5) 72%, var(--neutral-50, #fff)) 0%,
+      color-mix(in oklch, var(--panel-background, #e5eae5) 52%, var(--accent-500, #739668)) 35%,
+      color-mix(in oklch, var(--panel-background, #e5eae5) 60%, var(--accent-500, #739668)) 68%,
+      color-mix(in oklch, var(--panel-background, #e5eae5) 65%, var(--neutral-700, #464646)) 100%);
+  box-shadow:
+    var(--shadow-lg, 0 14px 32px rgb(0 0 0 / .2)),
+    20px 26px 42px color-mix(in srgb, var(--neutral-900, #222) 27%, transparent),
+    inset 4px 3px 5px color-mix(in srgb, var(--neutral-50, #fff) 38%, transparent),
+    inset -12px 0 20px color-mix(in srgb, var(--neutral-900, #222) 13%, transparent);
+  transform: rotateY(-1.4deg) rotateX(.45deg);
+  transform-style: preserve-3d;
+}
+
+.fridge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  background:
+    linear-gradient(106deg, transparent 9%,
+      color-mix(in srgb, var(--neutral-50, #fff) 17%, transparent) 24%,
+      transparent 42%),
+    repeating-linear-gradient(0deg,
+      color-mix(in srgb, var(--accent-500, #739668) 2%, transparent) 0 1px,
+      transparent 1px 5px);
+}
+
+.fridge::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 2%;
+  right: 0;
+  bottom: 2%;
+  width: 2.4%;
+  border-radius: 0 30px 34px 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent,
+    color-mix(in srgb, var(--neutral-900, #222) 17%, transparent));
+}
+
+/* Both drop zones are invisible regions of one uninterrupted door. */
+.fridge-surface,
+.pile {
+  position: absolute;
+  left: 5%;
+  right: 15%;
+  z-index: 3;
+  container-type: inline-size;
+}
+
+.fridge-surface { top: 6%; height: 49%; }
+.pile {
+  top: 57%;
+  bottom: 2%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.pile::-webkit-scrollbar { display: none; }
+.pile-content { position: relative; width: 100%; min-height: 100%; }
+
+.handle {
+  position: absolute;
+  z-index: 5;
+  top: 31%;
+  right: 5%;
+  width: clamp(28px, 3vw, 46px);
+  height: 31%;
+  border: 1px solid var(--panel-border-color, #879390);
+  border-radius: 24px;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    color-mix(in oklch, var(--panel-background, #e5eae5) 38%, var(--neutral-900, #222)),
+    color-mix(in oklch, var(--panel-background, #e5eae5) 34%, var(--neutral-50, #fff)) 29%,
+    color-mix(in oklch, var(--panel-background, #e5eae5) 45%, var(--neutral-100, #f4f4f4)) 57%,
+    color-mix(in oklch, var(--panel-background, #e5eae5) 40%, var(--neutral-800, #383838)));
+  box-shadow:
+    var(--shadow-md, 0 5px 13px rgb(0 0 0 / .23)),
+    inset 2px 0 2px color-mix(in srgb, var(--neutral-50, #fff) 45%, transparent),
+    inset -3px 0 4px color-mix(in srgb, var(--neutral-900, #222) 25%, transparent);
+  transform: translateZ(25px) rotateY(-9deg);
+}
+
+.handle::before,
+.handle::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  height: 6%;
+  border-radius: 8px;
+  background: color-mix(in oklch, var(--panel-background, #e5eae5) 42%, var(--neutral-700, #464646));
+  box-shadow: inset 0 1px 2px color-mix(in srgb, var(--neutral-900, #222) 25%, transparent);
+}
+.handle::before { top: 6%; }
+.handle::after { bottom: 6%; }
+
+/* The little bin appears only while Rupert is carrying a room word. */
+.room-bin {
+  position: absolute;
+  z-index: 8;
+  right: 4%;
+  bottom: 4%;
+  display: grid;
+  place-items: center;
+  width: 74px;
+  height: 69px;
+  border: 2px solid var(--panel-border-color, #879390);
+  border-radius: 7px;
+  color: var(--color-text, #242322);
+  background: color-mix(in oklch, var(--panel-background, #e5eae5) 70%, var(--neutral-50, #fff));
+  box-shadow: var(--shadow-md, 0 5px 13px rgb(0 0 0 / .23));
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px) rotate(6deg);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+.room-bin span { font: 700 37px/.8 var(--font-sans, system-ui, sans-serif); }
+.room-bin small { font: 700 11px/1 var(--font-sans, system-ui, sans-serif); }
+.fridge.room-dragging .room-bin { opacity: 1; transform: translateY(0) rotate(6deg); }
+.room-bin.active {
+  outline: var(--outline-focus, 2px solid #4a67b9);
+  outline-offset: 4px;
+  scale: 1.08;
+}
+
+/* A small note and pin carry state without turning the door into a dashboard. */
+.door-notes {
+  position: absolute;
+  z-index: 7;
+  top: 5%;
+  right: 2%;
+  width: clamp(115px, 12%, 185px);
+  pointer-events: none;
+}
+
+#status {
+  position: relative;
+  margin: 0;
+  padding: 18px 9px 10px;
+  border: 1px solid color-mix(in oklch, var(--neutral-50, #fff) 70%, var(--accent-500, #739668));
+  border-radius: 3px;
+  color: var(--neutral-900, #242424);
+  background: color-mix(in oklch, var(--neutral-50, #fff) 83%, var(--accent-100, #e7efdf));
+  box-shadow: var(--shadow-md, 0 5px 13px rgb(0 0 0 / .23));
+  font: 650 clamp(13px, 1.1vw, 17px)/1.2 var(--font-sans, system-ui, sans-serif);
+  text-align: center;
+  transform: rotate(4deg) translateZ(14px);
+}
+
+#status::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: calc(50% - 8px);
+  width: 16px;
+  height: 16px;
+  border: 2px solid color-mix(in oklch, var(--color-primary, #63845d) 65%, var(--neutral-900, #222));
+  border-radius: 50%;
+  background: var(--color-primary, #63845d);
+  box-shadow: var(--shadow-sm, 0 2px 5px rgb(0 0 0 / .22));
+}
+
+#status.thinking {
+  box-shadow:
+    var(--shadow-md, 0 5px 13px rgb(0 0 0 / .23)),
+    0 0 0 5px var(--accent-alpha-15, rgb(99 132 93 / .15));
+}
+#status.thinking::before { animation: pin-pulse 1.1s ease-in-out infinite; }
+@keyframes pin-pulse { 50% { scale: 1.22; opacity: .72; } }
+
+.error {
+  margin: 18px 0 0;
+  padding: 9px 10px;
+  border-left: 4px solid var(--color-danger, #a33232);
+  border-radius: 2px;
+  color: var(--color-danger, #a33232);
+  background: #fffefa;
+  box-shadow: var(--shadow-sm, 0 2px 5px rgb(0 0 0 / .2));
+  font: 600 13px/1.25 var(--font-sans, system-ui, sans-serif);
+  overflow-wrap: anywhere;
+  transform: rotate(-3deg);
+}
+[hidden] { display: none !important; }
+
+/* The lower edge and contact shadow give the white paper a magnetic thickness. */
+.magnet {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--tile-width);
+  min-height: 38px;
+  padding: 4px 10px 5px;
+  border: 1px solid #e4e1d8;
+  border-right: 2px solid #d1cdc3;
+  border-bottom: 3px solid #bdb9ae;
+  border-radius: 2px;
+  color: #1b1b1a;
+  background: linear-gradient(155deg, #fff 0%, #fffefa 67%, #f0eee7 100%);
+  box-shadow:
+    0 2px 0 rgb(30 30 29 / .22),
+    var(--shadow-md, 1px 5px 9px rgb(20 24 24 / .28));
+  font: 650 clamp(17px, 2.65cqw, 32px)/1.08 var(--font-sans, system-ui, sans-serif);
+  letter-spacing: -.015em;
+  white-space: nowrap;
+  user-select: none;
+  touch-action: none;
+  cursor: grab;
+  transform: rotate(var(--tilt, 0deg));
+  transform-origin: center;
+}
+
+.pile .magnet {
+  min-height: calc(34px * var(--pile-scale, 1));
+  padding: calc(3px * var(--pile-scale, 1)) calc(9px * var(--pile-scale, 1)) calc(4px * var(--pile-scale, 1));
+  font-size: clamp(11px, calc(2.15cqw * var(--pile-scale, 1)), 26px);
+}
+
+/* The room's paper has the same physical edge, with a tiny coloured star. */
+.room-magnet {
+  border-color: var(--accent-300, #adc99b);
+  border-right-color: var(--accent-400, #93b47c);
+  border-bottom-color: var(--accent-500, #739668);
+  background: linear-gradient(155deg,
+    color-mix(in oklch, var(--accent-50, #f2f8eb) 80%, var(--neutral-50, #fff)),
+    color-mix(in oklch, var(--accent-100, #e7efdf) 68%, var(--neutral-50, #fff)));
+}
+.room-magnet::after {
+  content: "✦";
+  position: absolute;
+  top: -9px;
+  right: -7px;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  color: var(--color-primary-text, #fff);
+  background: var(--color-primary, #63845d);
+  box-shadow: var(--shadow-sm, 0 2px 5px rgb(0 0 0 / .22));
+  font: 700 12px/1 var(--font-sans, system-ui, sans-serif);
+}
+.magnet.room-highlight {
+  box-shadow:
+    0 2px 0 rgb(30 30 29 / .22),
+    var(--shadow-md, 1px 5px 9px rgb(20 24 24 / .28)),
+    0 0 0 7px var(--accent-alpha-25, rgb(99 132 93 / .25));
+}
+
+.magnet.can-move:hover {
+  z-index: 25;
+  scale: 1.025;
+  box-shadow:
+    0 3px 0 rgb(30 30 29 / .18),
+    var(--shadow-lg, 2px 9px 17px rgb(20 24 24 / .3));
+}
+.magnet:not(.can-move) { cursor: default; }
+.magnet.is-source { opacity: .22; }
+.magnet.arrival-pending { opacity: 0; }
+.magnet:focus-visible { outline: var(--outline-focus, 2px solid #4a67b9); outline-offset: 5px; }
+.magnet.settle { animation: stick-settle 280ms cubic-bezier(.2,.8,.24,1) both; }
+
+@keyframes stick-settle {
+  0% { transform: translateY(-5px) rotate(calc(var(--tilt) - 1.3deg)) scale(1.06); }
+  56% { transform: translateY(2px) rotate(calc(var(--tilt) + .7deg)) scale(.985); }
+  100% { transform: translateY(0) rotate(var(--tilt)) scale(1); }
+}
+
+.drag-ghost,
+.agent-flyer,
+.room-flyer {
+  position: fixed !important;
+  z-index: 1000;
+  margin: 0;
+  min-height: 0;
+  pointer-events: none;
+  will-change: transform;
+  box-shadow:
+    0 4px 0 rgb(30 30 29 / .13),
+    var(--shadow-xl, 4px 17px 26px rgb(20 24 24 / .33));
+}
+.drag-ghost { animation: magnet-lift 150ms ease-out both; cursor: grabbing; }
+.room-flyer { z-index: 1002; }
+@keyframes magnet-lift { from { scale: 1; } to { scale: 1.08; } }
+
+/* The agent carries a colored pointer with a tiny name tag. */
+.agent-cursor {
+  position: fixed;
+  z-index: 1001;
+  width: 60px;
+  height: 65px;
+  pointer-events: none;
+  will-change: transform;
+}
+.agent-cursor::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 44px;
+  background: var(--color-primary, #63845d);
+  clip-path: polygon(0 0, 0 100%, 27% 75%, 47% 100%, 64% 91%, 43% 65%, 89% 64%);
+  filter: drop-shadow(2px 3px 1px color-mix(in srgb, var(--neutral-900, #222) 45%, transparent));
+}
+.agent-cursor span {
+  position: absolute;
+  top: 36px;
+  left: 16px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  color: var(--color-primary-text, #fff);
+  background: var(--color-primary, #63845d);
+  box-shadow: var(--shadow-md, 0 5px 13px rgb(0 0 0 / .23));
+  font: 700 14px/1.1 var(--font-sans, system-ui, sans-serif);
+  white-space: nowrap;
+}
+
+@media (max-width: 760px) {
+  .experience { padding: 8px; }
+  .fridge { border-radius: 28px; }
+  .fridge-surface, .pile { left: 4%; right: 17%; }
+  .door-notes { right: 1%; width: 105px; }
+  .handle { right: 5%; width: 26px; }
+  .magnet { min-height: 29px; padding: 3px 6px 4px; font-size: clamp(12px, 2.5cqw, 23px); }
+  .pile .magnet {
+    min-height: calc(27px * var(--pile-scale, 1));
+    padding: calc(2px * var(--pile-scale, 1)) calc(5px * var(--pile-scale, 1)) calc(3px * var(--pile-scale, 1));
+    font-size: clamp(10px, calc(2.3cqw * var(--pile-scale, 1)), 20px);
+  }
+  .room-bin { right: 3%; width: 51px; height: 53px; }
+  .room-bin span { font-size: 26px; }
+  .room-bin small { font-size: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #status.thinking::before, .magnet.settle, .drag-ghost { animation: none; }
+}

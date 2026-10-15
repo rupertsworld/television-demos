@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fridge poetry</title>
+    <link rel="stylesheet" href="/canonical/v2/styles.css?authoredForAppVersion=1.5.0">
+    <script type="module" src="/canonical/v2/components.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script type="module" src="./app.mjs"></script>
+  </head>
+  <body>
+    <main class="experience">
+      <section class="fridge" aria-label="Fridge door">
+        <div class="fridge-surface" id="fridge" aria-label="Poem on the upper door"></div>
+        <div class="pile" id="pile" aria-label="Loose word magnets on the lower door">
+          <div class="pile-content" id="pile-content"></div>
+        </div>
+        <div class="handle" aria-hidden="true"></div>
+        <div class="room-bin" id="room-bin" aria-hidden="true"><span>×</span><small>remove</small></div>
+        <div class="door-notes">
+          <p id="status" role="status" aria-live="polite">Opening the fridge…</p>
+          <p id="error" class="error" role="alert" hidden></p>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>

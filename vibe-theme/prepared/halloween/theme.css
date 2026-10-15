@@ -1,0 +1,101 @@
+/* Halloween Night: fixed dark colors in shared documents, scenery in the app shell. */
+@font-face {
+  font-family: "Creepster";
+  src: url(assets/Creepster-Regular.ttf) format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --demo-spooky: 1;
+  --color-surface: #130d1e;
+  --color-surface-muted: #24152e;
+  --color-text: #fff2dd;
+  --color-text-muted: #d2bfd7;
+  --neutral: oklch(0.5 0.075 304);
+  --accent: #ff9d2e;
+  --green: oklch(0.77 0.19 127);
+  --color-border: rgb(255 157 46 / 48%);
+  --color-link: #d6ff82;
+  --color-success: #b8df72;
+  --font-sans: "Trebuchet MS", Verdana, Arial, sans-serif;
+  --control-radius: 6px;
+  --panel-radius: 10px;
+  --panel-border: 1px solid var(--color-border);
+  --panel-edge-highlight: linear-gradient(to bottom, rgb(255 196 94 / 35%), transparent 1em);
+  --panel-edge-shadow: 0 0 0 1px rgb(255 116 23 / 32%);
+  --shadow-sm: 0 2px 8px rgb(0 0 0 / 40%);
+  --shadow-md: 0 8px 22px rgb(0 0 0 / 50%), 0 0 16px rgb(255 112 22 / 12%);
+  --shadow-lg: 0 14px 32px rgb(0 0 0 / 60%), 0 0 24px rgb(255 112 22 / 16%);
+
+  /* Private, inline SVG paint used only by the corner rules below. */
+  --halloween-web-left: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23b4e399' stroke-opacity='.7' stroke-width='1.4'%3E%3Cpath d='M0 0H100M0 0V100M0 0L100 100M0 0L100 50M0 0L50 100'/%3E%3Cpath d='M0 18Q18 18 18 0M0 36Q36 36 36 0M0 54Q54 54 54 0M0 72Q72 72 72 0'/%3E%3C/g%3E%3C/svg%3E");
+  --halloween-web-right: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cg fill='none' stroke='%23b4e399' stroke-opacity='.7' stroke-width='1.4'%3E%3Cpath d='M100 0H0M100 0V100M100 0L0 100M100 0L0 50M100 0L50 100'/%3E%3Cpath d='M100 18Q82 18 82 0M100 36Q64 36 64 0M100 54Q46 54 46 0M100 72Q28 72 28 0'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Display lettering is limited to headings; ordinary artifact content keeps the readable body stack. */
+:root:not([data-television-document="app"]) :is(h1, h2, h3) {
+  font-family: "Creepster", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.045em;
+  color: #ffd28b;
+}
+
+:root[data-television-document="app"] {
+  --sidebar-background: #1d1029;
+  --sidebar-text-color: #fff0ce;
+  --sidebar-heading-text-color: #fbb460;
+  --sidebar-border: 2px solid #63305b;
+  /* The first radial is the moon; the next two give its purple halo and a firelit horizon. */
+  --app-wallpaper:
+    radial-gradient(circle 42px at 82% 18%, #fff4c9 0 72%, #f9c982 79%, transparent 89%),
+    radial-gradient(ellipse 210px 180px at 82% 18%, rgb(181 113 209 / 38%), transparent 82%),
+    radial-gradient(ellipse 70% 52% at 50% 104%, rgb(226 87 21 / 42%), transparent 78%),
+    linear-gradient(163deg, #100a21 0%, #1d1030 53%, #32152d 100%);
+  --wallpaper-overlay-background: rgb(31 13 41 / 88%);
+  --wallpaper-overlay-text-color: #ffe9c9;
+  --navbar-text-color: #ffe9c9;
+  --channel-background-selected: #ff9d2e;
+  --channel-text-color-selected: #24111b;
+  --tab-background-selected: #54213b;
+  --tab-text-color-selected: #ffe7bb;
+  --tab-border-selected: 1px solid #ffad45;
+  --tab-radius: 7px;
+  --frame-radius: 15px;
+  --frame-background: #130d1e;
+  --frame-border: 2px solid #f08b27;
+  --frame-titlebar-background: #301832;
+  --frame-titlebar-text-color: #ffe7bb;
+  --frame-titlebar-border-color: #8c4836;
+  --artifact-frame-shadow: 0 24px 58px rgb(0 0 0 / 76%), 0 0 26px rgb(255 111 20 / 34%);
+}
+
+/* The sidebar gets a translucent web without covering channel text. */
+:root[data-television-document="app"] .sidebar {
+  background-image: var(--halloween-web-left);
+  background-position: left top;
+  background-size: 120px 120px;
+  background-repeat: no-repeat;
+}
+
+/* Card titlebars expose the two lower frame corners even when an iframe fills the card. */
+:root[data-television-document="app"] .artifact-title-bar {
+  background-image: var(--halloween-web-left), var(--halloween-web-right);
+  background-position: left bottom, right bottom;
+  background-size: 54px 54px;
+  background-repeat: no-repeat;
+}
+
+/* The collapsed sidebar hosts its own channel list, so carry the orange selection cue into it. */
+:root[data-television-document="app"] .channel-switcher-pop {
+  --channel-background-selected: #ff9d2e;
+  --channel-text-color-selected: #24111b;
+}
+
+/* Distinctive titles are short; controls and body text keep the readable font. */
+:root[data-television-document="app"] :is(.artifact-title, .tab-label, .channel-group-label) {
+  font-family: "Creepster", Georgia, serif;
+  font-weight: 400;
+  letter-spacing: 0.055em;
+}

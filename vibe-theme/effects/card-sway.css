@@ -1,0 +1,20 @@
+/* Append to theme.css. Subdegree rotation keeps the stage's own page transform intact. */
+:root[data-television-document="app"] {
+  --vibe-sway-angle: .55deg; /* EDIT: stay below 1deg so controls remain easy to use. */
+  --vibe-sway-duration: 8s; /* EDIT */
+}
+
+/* The selected frame tilts gently; page selection, resize and drag transforms stay app-owned. */
+:root[data-television-document="app"] .page[selected] > .artifact-frame {
+  animation: vibe-card-sway var(--vibe-sway-duration) ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+
+@keyframes vibe-card-sway {
+  from { rotate: calc(0deg - var(--vibe-sway-angle)); }
+  to { rotate: var(--vibe-sway-angle); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root[data-television-document="app"] .page[selected] > .artifact-frame { animation: none; rotate: 0deg; }
+}
