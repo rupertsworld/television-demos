@@ -69,6 +69,6 @@ When Rupert asks to make the TV (or the theme, or everything) these colours, run
 - **My stuff**: Rupert's own data in Autofile, and the How Television works drawing. He drives it; never open, read or change records yourself.
 - **Tonight**: an ordinary event page that follows the theme. Nothing to do.
 - **television.run**: the website, as a web-page card. Nothing to do.
-- **Script**, **Demos** and **Brief**: Rupert's notes. Never focus or show them.
+- **Script**, **Demos** and **Brief** are Rupert's notes on the separate **Demo planning** channel. Never focus or show them.
 
 If something does not appear within about a minute, stop and tell Rupert in one line; he moves on.

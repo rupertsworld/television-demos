@@ -1,61 +1,74 @@
 # Diff & Demo script
 
-Five minutes. Gist only; say it your way. The thread: one environment where data and interfaces are separate, so software can be made for just you, and shared with your agent.
+Five minutes. Gist only; say it your way. The thread: software that can be made on the fly can be made for one person. Television is where I try it.
 
 ## Before you go up
 
 - Fresh agent session in `tv-demos`, run `/diff-and-demo`.
 - Room line is already running on rubot (tmux `room-line`). Nothing to do.
-- Pick the channels you'll flash in the opening; nothing private on the projector.
-- Start on the Television channel. On Weird stuff, keep Script, Demos and Brief off screen.
+- Start on the Television channel.
 
 ## Television channel · 0:00
 
-- Television: a collaborative screen I share with my agent, for software generated on the fly.
-- The everyday stuff: logo, a checklist, a calendar (tonight, and the demo cram before it), a code viewer.
-- I use it for all my normal productivity.
-- **You:** scroll down one channel to Weird stuff. This isn't a productivity talk.
+- Software used to be made for millions. Now it can be made for one.
+- Television: a screen I share with my agent.
+- The everyday first: a checklist, tonight on a calendar, some code. Useful, but not the point.
+- **You:** scroll down one channel to Weird stuff.
 
-## Colour study · 0:45
+## Colour study · 0:40
 
-- Because there's an interface, I can make software for one very particular use: exploring palettes and patterns for wallpapers and design ideas.
-- Personal software you couldn't easily get before.
+- Some software only ever needs one user. This is mine, for wandering through colours.
 - **You:** drag a slider or two.
 - **Ask:** "Make it feel like a storm." The sliders move on their own.
-- **You:** fine-tune it until you like it.
-- **Ask:** "Make my TV these colours." The whole app takes on the palette.
-- Segue: those sliders are just numbers in a data store. The agent sees data, I see sliders, and the theme read them too.
+- **You:** tune it until it feels right.
+- **Ask:** "Make my TV these colours." The whole room changes.
+- What I like in one place can colour everything.
 
-## My stuff: data and views · 1:45
+## My stuff · 1:35
 
-- **You:** open My stuff. All my data in one store, connected to TV.
-- **You:** open How Television works. It's a drawing in that store: the agent reads it as data, I see a drawing.
-- Solid is today; dashed is next: data stored once, any view for any data.
-- Generative UIs can turn any data into the view you need, and you can vibe new ones.
+- **You:** open My stuff. Bits of my life, kept in one place.
+- **You:** open How Television works.
+- Solid is today, dashed is next.
+- The data stays still; the interfaces come and go, made for the moment.
 
-## Face · 2:30
+## Views · 2:05
 
-- The anthropomorphizing joke: against it for years, realised I was wrong, gave my TV a face.
+- **You:** open the TV MCP prototype: Files › Resources › parks.csv.
+- The way data arrives doesn't have to be the way I use it.
+- **You:** Raw (how it arrived), then Table, Map, Timeline from the caret menu.
+- Pick a view from a list, or just ask for the one I feel like.
+- **Ask the room:** "What view would you want?" Start it with ⌘K, then move on; come back at the close.
+- Backups: "Show the parks as stamps in a passport" · "Rank the parks like a trading-card deck" · "Plan a road trip through them" · "Which one should I visit this weekend?"
+
+## Face · 2:45
+
+- Software doesn't have to be neutral. It can have a face.
+- The anthropomorphizing joke: against it for years, realised I was wrong.
 - **Ask:** "Tell the room how you feel about having a face."
 
-## Send a word, then fridge poetry · 2:55
+## Send a word, then fridge poetry · 3:05
 
+- Personal doesn't mean alone.
 - **You:** show Send a word: one word each, keep it friendly.
-- Every card has its own live data store: the agent sees data, I see an interface, so we can play a game.
-- **You:** drag a word; the agent drags one back. Use the room's words as they land; the face reacts.
+- For personal software to be within everyone's reach, it needs an environment: the right building blocks, so things come easily.
+- Here the block is a shared store. My agent sees what I see, and can reach in and play.
+- You could vibe this from scratch. With the blocks in place, it just falls out.
+- **You:** drag a word; the agent answers. Use the room's words as they land; the face reacts.
 - If asked about safety: plain code cuts each entry to one checked word.
 
-## Theme · 4:05
+## Theme · 4:15
 
-- It's all one environment, and it's personal, so the whole thing should be personal and hackable.
+- If software is personal, the whole place should feel like yours, even in costume.
 - **You:** show Tonight. **Ask:** "Make it spooky."
-- Everything changes at once; the face turns into a vampire.
+- Everything changes at once; the face becomes a vampire.
 - Honest: made this afternoon; I asked for Halloween, then "scarier, with pumpkins".
 
-## Close · 4:35
+## Close · 4:40
 
-- Read the poem: written by me, a computer and the room.
-- The repo: everything you saw is on GitHub. Television at television.run.
+- If the room's view is ready: show it.
+- Read the poem: me, a computer and the room.
+- Software you play with, not just use.
+- Everything you saw is on GitHub. Television at television.run.
 
 ## If something hangs
 
